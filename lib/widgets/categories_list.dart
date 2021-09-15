@@ -4,38 +4,24 @@ import 'dart:convert';
 
 import 'dart:core';
 
-class CategoriesList extends StatefulWidget {
-  CategoriesList({Key? key}) : super(key: key);
+class CategoriesList extends StatelessWidget {
+  final Function passRecipeCategory;
+  final String activeCategory;
+  final Future<List<String>> getAllCategories;
 
-  @override
-  _CategoriesListState createState() => _CategoriesListState();
-}
+  const CategoriesList({
+    Key? key,
+    required this.passRecipeCategory,
+    required this.activeCategory,
+    required this.getAllCategories,
+  }) : super(key: key);
 
-class _CategoriesListState extends State<CategoriesList> {
-  Future<List<String>> _getAllCategories() async {
-    const String _categoriesListURL =
-        "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
-    var url = Uri.parse(_categoriesListURL);
-    final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      Iterable catgList = result["meals"];
-      return [
-        'All',
-        ...catgList.map((categoryJson) {
-          return categoryJson["strCategory"];
-        }).toList()
-      ];
-    } else {
-      throw Exception('Failed to load categories list');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getAllCategories(),
+      future: getAllCategories,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.data == null) {
           return const Center(
@@ -48,8 +34,10 @@ class _CategoriesListState extends State<CategoriesList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ...snapshot.data.map((item) {
+                bool isActiveCategory = (item == activeCategory);
                 return GestureDetector(
                   onTap: () {
+                    passRecipeCategory(item);
                     // recipeProvider.displayRecipes(
                     //     category: recipeProvider.categoryList![index]);
                   },
@@ -62,14 +50,16 @@ class _CategoriesListState extends State<CategoriesList> {
                       child: Text(
                         // recipeProvider.categoryList![index],
                         item,
-                        style: const TextStyle(
-                            fontSize: 15.0, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            color: (isActiveCategory)
+                                ? Colors.white
+                                : Colors.black),
                       ),
-                      decoration: const BoxDecoration(
-                        // color: (recipeProvider.categorySelected ==
-                        //         recipeProvider.categoryList![index])
-                        //     ? Colors.black87
-                        //     : Colors.grey,
+                      decoration: BoxDecoration(
+                        color: (isActiveCategory)
+                            ? Colors.black87
+                            : Colors.transparent,
                         borderRadius: BorderRadius.all(
                           Radius.circular(15.0),
                         ),

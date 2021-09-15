@@ -5,39 +5,21 @@ import 'dart:convert';
 
 import 'package:responsive_recipe_application/widgets/recipe_card.dart';
 
-class RecipeGrid extends StatefulWidget {
-  const RecipeGrid({Key? key}) : super(key: key);
+class RecipeGrid extends StatelessWidget {
+  final String category;
+  final Future<List<BriefRecipe>>  getAllRecipesByCategory;
 
-  @override
-  _RecipeGridState createState() => _RecipeGridState();
-}
-
-class _RecipeGridState extends State<RecipeGrid> {
-  Future<List<BriefRecipe>> _getAllRecipesByCategory() async {
-    const String _categoryApiUrl =
-        "https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef";
-    var url = Uri.parse(_categoryApiUrl);
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      Iterable recipeList = result["meals"];
-
-      return recipeList.map((recipe) {
-        return BriefRecipe.fromJson(recipe);
-      }).toList();
-    } else {
-      throw Exception('Failed to load Recipes');
-    }
-  }
+  const RecipeGrid(
+      {Key? key, required this.category, required this.getAllRecipesByCategory})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getAllRecipesByCategory(),
+      future: getAllRecipesByCategory,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.data == null) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
               color: Colors.amber,
             ),
