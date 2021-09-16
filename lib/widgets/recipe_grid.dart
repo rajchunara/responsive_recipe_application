@@ -7,7 +7,7 @@ import 'package:responsive_recipe_application/widgets/recipe_card.dart';
 
 class RecipeGrid extends StatelessWidget {
   final String category;
-  final Future<List<BriefRecipe>>  getAllRecipesByCategory;
+  final Future<List<BriefRecipe>> getAllRecipesByCategory;
 
   const RecipeGrid(
       {Key? key, required this.category, required this.getAllRecipesByCategory})
@@ -15,6 +15,28 @@ class RecipeGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    int crossAxisGridCount() {
+      if (width <= 630) {
+        return 2;
+      } else if (width > 630 && width <= 900) {
+        return 3;
+      } else {
+        return 4;
+      }
+    }
+
+    double paddingOfGrid() {
+      if (width <= 480) {
+        return 10;
+      } else if (width > 480 && width < 1000) {
+        return 50;
+      } else {
+        return 100;
+      }
+    }
+
     return FutureBuilder(
       future: getAllRecipesByCategory,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -26,10 +48,11 @@ class RecipeGrid extends StatelessWidget {
           );
         } else {
           return Padding(
-            padding: const EdgeInsets.only(top: 80, left: 200, right: 200),
+            padding: EdgeInsets.only(
+                top: 80, left: paddingOfGrid(), right: paddingOfGrid()),
             child: GridView.count(
               shrinkWrap: true,
-              crossAxisCount: 4,
+              crossAxisCount: crossAxisGridCount(),
               children: [
                 ...snapshot.data.map((item) {
                   return RecipeCard(recipe: item);

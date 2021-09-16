@@ -113,12 +113,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             //Categories List view
             Container(
+              alignment: Alignment.center,
               height: 60,
               color: Colors.amber,
-              child: CategoriesList(
-                passRecipeCategory: changeRecipeCategory,
-                activeCategory: recipeCategory,
-                getAllCategories: _getAllCategories(),
+              child: Center(
+                child: CategoriesList(
+                  passRecipeCategory: changeRecipeCategory,
+                  activeCategory: recipeCategory,
+                  getAllCategories: _getAllCategories(),
+                ),
               ),
             ),
 
