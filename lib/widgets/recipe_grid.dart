@@ -30,10 +30,12 @@ class RecipeGrid extends StatelessWidget {
     double paddingOfGrid() {
       if (width <= 480) {
         return 10;
-      } else if (width > 480 && width < 1000) {
+      } else if (width > 480 && width <= 1000) {
         return 50;
-      } else {
+      } else if (width > 1000 && width <= 1450) {
         return 100;
+      } else {
+        return 250;
       }
     }
 
