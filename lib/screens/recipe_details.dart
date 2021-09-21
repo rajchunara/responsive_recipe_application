@@ -103,16 +103,16 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                   child: CustomScrollView(
                     slivers: [
                       SliverAppBar(
-
+                        automaticallyImplyLeading: false,
                         backgroundColor: Colors.white,
                         expandedHeight: _getImageHeight(),
                         flexibleSpace: FlexibleSpaceBar(
                           background: ClipRRect(
                             borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(
-                                    _getImageClippingRadius()),
-                                bottomRight: Radius.circular(
-                                    _getImageClippingRadius())),
+                                bottomLeft:
+                                    Radius.circular(_getImageClippingRadius()),
+                                bottomRight:
+                                    Radius.circular(_getImageClippingRadius())),
                             child: Stack(
                               fit: StackFit.expand,
                               children: [
@@ -162,18 +162,16 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                                   Text(
                                     _detailedRecipe.strArea,
                                     style: TextStyle(
-                                        color: Colors.green[900],
-                                        fontSize: 16),
+                                        color: Colors.green[900], fontSize: 16),
                                   ),
-                                  VerticalDivider(
+                                  const VerticalDivider(
                                     color: Colors.grey,
                                     width: 50.0,
                                   ),
                                   Text(
                                     _detailedRecipe.strCategory,
                                     style: TextStyle(
-                                        color: Colors.green[900],
-                                        fontSize: 16),
+                                        color: Colors.green[900], fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -182,13 +180,13 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                             Container(
                               child: Column(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(left: 20),
+                                    padding: const EdgeInsets.only(left: 20),
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: const Text(
                                       'Instructions',
                                       style: TextStyle(
                                           fontSize: 25,
@@ -203,12 +201,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                                         horizontal: 20.0, vertical: 20),
                                     child: Text(
                                       _detailedRecipe.strInstructions,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 340,
                                   ),
                                 ],
@@ -222,6 +220,22 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                 ),
               ),
             ),
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        leading: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.amber),
+            elevation: MaterialStateProperty.all(0.0),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black87,
+          ),
+        ),
+      ),
     );
   }
 }
