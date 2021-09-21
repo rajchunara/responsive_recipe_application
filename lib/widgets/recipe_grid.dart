@@ -42,13 +42,7 @@ class RecipeGrid extends StatelessWidget {
     return FutureBuilder(
       future: getAllRecipesByCategory,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.data == null) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.amber,
-            ),
-          );
-        } else {
+        if (snapshot.hasData) {
           return Padding(
             padding: EdgeInsets.only(
                 top: 80, left: paddingOfGrid(), right: paddingOfGrid()),
@@ -62,6 +56,8 @@ class RecipeGrid extends StatelessWidget {
               ],
             ),
           );
+        } else {
+          return Container();
         }
       },
     );

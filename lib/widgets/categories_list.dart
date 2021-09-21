@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -101,21 +102,50 @@ class CategoriesList extends StatelessWidget {
     return FutureBuilder(
       future: getAllCategories,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.data == null) {
+        if (snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.green,
             ),
           );
-        } else {
-          if (width > 480) {
-            return _desktopView(snapshot);
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            if (width > 480) {
+              return _desktopView(snapshot);
+            } else {
+              return _mobileView(snapshot);
+            }
           } else {
-            return _mobileView(snapshot);
+            return const Center(
+              child: Text(
+                'Something went wrong...',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            );
           }
-
-          // return _mobileView(snapshot);
+        } else {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 100.0),
+              child: Text('Something went wrong'),
+            ),
+          );
         }
+
+        // if (snapshot.data == null) {
+        //   return const Center(
+        //     child: CircularProgressIndicator(
+        //       color: Colors.green,
+        //     ),
+        //   );
+        // } else {
+        //   if (width > 480) {
+        //     return _desktopView(snapshot);
+        //   } else {
+        //     return _mobileView(snapshot);
+        //   }
+        // }
       },
     );
   }
