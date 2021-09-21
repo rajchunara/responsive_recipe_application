@@ -33,12 +33,12 @@ class HomeScreen extends StatelessWidget {
                         color: const Color.fromRGBO(0, 0, 0, 0.35),
                         colorBlendMode: BlendMode.darken,
                       ),
-                      const Center(
+                      Center(
                         child: Text(
-                          'Find Your Recipe',
+                          'Delicious Recipes',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 50.0,
+                              fontSize: (width > 500.0) ? 50.0 : 40.0,
                               fontWeight: FontWeight.bold),
                         ),
                       )
